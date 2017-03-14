@@ -1,4 +1,6 @@
 {
+  "port": 8080,
+  "rethinkdb": {},
   "twitter": {
     "consumer_key": "",
     "consumer_secret": "",
