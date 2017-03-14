@@ -1,0 +1,18 @@
+{
+  "name": "Hasbara",
+  "version": "0.1.0",
+  "description": "Visual representation of Israel's image around the world",
+  "main": "app.js",
+  "repository": "https://github.com/iDaN5x/Hasbara.git",
+  "author": "Idan A. <idan5x@live.com>",
+  "license": "GNU GPLv3",
+  "scripts": {
+    "start": "node --harmony-async-await app.js"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "rethinkdbdash": "^2.3.28",
+    "socket.io": "^1.7.3",
+    "twitter": "^1.7.0"
+  }
+}

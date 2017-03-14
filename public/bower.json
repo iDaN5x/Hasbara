@@ -1,0 +1,23 @@
+{
+  "name": "Hasbara",
+  "homepage": "https://github.com/iDaN5x/Hasbara",
+  "authors": [
+    "Idan A. <idan5x@live.com>"
+  ],
+  "description": "Visual representation of Israel's image around the world",
+  "main": "index.html",
+  "keywords": [
+    "GIS",
+    "Social",
+    "Network",
+    "Twitter"
+  ],
+  "license": "GNU GPLv3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
