@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "express": "^4.15.2",
+    "lodash": "^4.17.4",
+    "node-geocoder": "^3.16.0",
     "rethinkdbdash": "^2.3.28",
     "socket.io": "^1.7.3",
     "twit": "^2.2.5"
