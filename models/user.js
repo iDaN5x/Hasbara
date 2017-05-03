@@ -1,7 +1,7 @@
 const {thinky} = require('./AppComponents.js'),
-      User = require('./tweet.js');
+      Types = thinky.types;
 
-const Types = thinky.types;
+const Tweet = require('./tweet.js');
 
 // Create user model.
 const User = thinky.createModel('User', {
@@ -17,4 +17,4 @@ User.hasMany(Tweet, "tweets", "id", "userId");
 // Create User<-Location relation.
 User.hasOne(Location, "location", "locationName", "name");
 
-module.exports = Tweet;
+module.exports = User;

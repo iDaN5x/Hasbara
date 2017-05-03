@@ -52,6 +52,10 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
+aylien_textapi@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/aylien_textapi/-/aylien_textapi-0.6.0.tgz#d9f08422c999133e51f570498e546ec60f2987fd"
+
 backo2@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"

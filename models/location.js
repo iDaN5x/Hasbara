@@ -1,9 +1,12 @@
-const {thinky} = require('./AppComponents.js'),
-      NodeGeocoder = require('node-geocoder'),
-      User = require('./user.js');
+const NodeGeocoder = require('node-geocoder'),
 
-const geocoder = new NodeGeocoder(config.geocoder),
+const {thinky} = require('./app-components.js'),
       Types = thinky.types;
+
+const User = require('./user.js');
+
+// Connect to GeoCoder service.
+const geocoder = new NodeGeocoder(config.geocoder);
 
 // Create location model.
 const Location = thinky.createModel('Location', {

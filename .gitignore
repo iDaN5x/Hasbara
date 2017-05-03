@@ -1,6 +1,9 @@
 # Configuration files.
 config.json
 
+# Database
+rethinkdb_data
+
 # Logs
 logs
 *.log

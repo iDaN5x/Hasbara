@@ -1,7 +1,11 @@
-const {thinky} = require('./AppComponents.js'),
-      User = require('./user.js');
+const CamelCase = require('camelcase-keys');
 
-const Types = thinky.types;
+const {thinky} = require('./app-components.js'),
+      config = require('./config.json'),
+      Types = thinky.types;
+
+const Sentiment = require('./sentiment.js'),
+      User = require('./user.js');
 
 // Create tweet model.
 const Tweet = thinky.createModel('Tweet', {
@@ -11,11 +15,28 @@ const Tweet = thinky.createModel('Tweet', {
   userId: Types.string(),
   createdAt: Types.date(),
   coordinates: Types.point(),
-  retweetCount: Types.inetger(),
-  favoriteCount: Types.number().min(0)
+  retweetCount: Types.number().inetger().min(0),
+  favoriteCount: Types.number().integer().min(0)
 });
+
+Tweet.from = async function(raw) {
+  // Create tweet entitiy from raw data.
+  let tweet = new Tweet(CamelCase(raw));
+
+  // Get tweet text's sentiment.
+  let sentiment = await Sentiment.from(tweet.text);
+
+  // Set tweet's sentiment.
+  tweet.sentiment = sentiment;
+
+  // Save tweet to database.
+  return await tweet.saveAll({sentiment: true});
+};
 
 // Create User->Tweet relation.
 Tweet.belongsTo(User, "user", "userId", "id");
+
+// Create Tweet<-Sentiment relation.
+Tweet.hasOne(Sentiment, "sentiment", "text", "text");
 
 module.exports = Tweet;

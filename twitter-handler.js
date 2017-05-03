@@ -1,12 +1,15 @@
 const Twitter = require('twit'),
       CamelCase = require('camelcase-keys');
 
+const {io} = require('./app-components.js'),
+      config = require('./config.json');
+
 const Location = require('./models/location.js'),
       Tweet = require('./models/tweet.js'),
       User = require('./models/user.js');
 
 class TwitterHandler {
-  constructor(config) {
+  constructor() {
     // Initialize Twitter client.
     this.twitter = new Twitter(config.twitter);
 
@@ -19,7 +22,8 @@ class TwitterHandler {
 
   onTweet(t) {
     // Create new tweet entry.
-    let tweet = new Tweet(CamelCase(t));
+    let tweet = Tweet.from(t);
+    if (!tweet) return;
 
     // Check if exisiting user.
     let user = await User
@@ -33,11 +37,18 @@ class TwitterHandler {
     }
 
     // Update user location if chanegd.
-    user.location = await Location.from(t.user.location) ||
-                    user.location;
+    let currLocation = await Location.from(t.user.location);
 
-    // Save new/updated user.
-    await user.saveAll();
+    // If current location exist update user DB entry.
+    if (currLocation != user.location) {
+      user.location = currLocation;
+      await user.saveAll({location: true});
+    }
+
+    // Get coordinates for tweet placement.
+    let coordinates = user.location.coordinates || tweet.coordinates;
+
+
   }
 }
 
