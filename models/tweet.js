@@ -1,7 +1,6 @@
 const CamelCase = require('camelcase-keys');
 
 const {thinky} = require('./app-components.js'),
-      config = require('./config.json'),
       Types = thinky.types;
 
 const Sentiment = require('./sentiment.js'),
@@ -19,6 +18,7 @@ const Tweet = thinky.createModel('Tweet', {
   favoriteCount: Types.number().integer().min(0)
 });
 
+// Factory method.
 Tweet.from = async function(raw) {
   // Create tweet entitiy from raw data.
   let tweet = new Tweet(CamelCase(raw));

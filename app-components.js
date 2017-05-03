@@ -3,7 +3,7 @@ const Http = require('http'),
       Path = require('path');
 
 // External dependencies.
-const Thinky = require('Thinky'),
+const Thinky = require('thinky'),
       Express = require('express'),
       SocketIO = require('socket.io');
 

@@ -21,34 +21,29 @@ class TwitterHandler {
   }
 
   onTweet(t) {
-    // Create new tweet entry.
-    let tweet = Tweet.from(t);
-    if (!tweet) return;
+    // Only process tweets written in supported languages.
+    if (config.supportedLanguages.contains(t.lang)) {
+      // Get user location as GeoJson object.
+      let userLocation = Location.from(t.user.location);
 
-    // Check if exisiting user.
-    let user = await User
-              .filter({id: t.user.id})
-              .getJoin({location: true})
-              .run();
+      // Grab pin coordinates.
+      let coordinates = userLocation.coordinates || t.coordinates;
 
-    // If new user create entry.
-    if (!user) {
-      user = new User(CamelCase(t.user));
+      // Only if coordinates exist.
+      if (coordinates) {
+        // Build user entry.
+        let user = User.from(t.user);
+        user.location = userLocation.
+
+        // Build tweet entry.
+        let tweet = new Tweet(t);
+        tweet.sentiment = Sentiment.from(tweet.text);
+        tweet.user = user;
+
+        // Save tweet to database.
+        await tweet.saveAll();
+      }
     }
-
-    // Update user location if chanegd.
-    let currLocation = await Location.from(t.user.location);
-
-    // If current location exist update user DB entry.
-    if (currLocation != user.location) {
-      user.location = currLocation;
-      await user.saveAll({location: true});
-    }
-
-    // Get coordinates for tweet placement.
-    let coordinates = user.location.coordinates || tweet.coordinates;
-
-
   }
 }
 

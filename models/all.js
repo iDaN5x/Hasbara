@@ -1,6 +1,7 @@
-const User = require('./user.js'),
-      Tweet = require('./tweet.js'),
-      Location = require('./location.js'),
-      Sentiment = require('./sentiment.js');
-
-modules.exports = { User, Tweet, Location, Sentiment };
+// Export all entities.
+modules.exports = {
+  User: require('./user.js'),
+  Tweet: require('./tweet.js'),
+  Location: require('./location.js'),
+  Sentiment: require('./sentiment.js');
+};

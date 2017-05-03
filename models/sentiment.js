@@ -20,6 +20,7 @@ const Sentiment = thinky.createModel('Sentiment', {
   text: Types.string()
 });
 
+// Factory method.
 Sentiment.from = async function(text) {
   // Check if anaylzed before.
   let sentiment = await Sentiment
