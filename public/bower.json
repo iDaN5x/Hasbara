@@ -2,7 +2,9 @@
   "name": "Hasbara",
   "homepage": "https://github.com/iDaN5x/Hasbara",
   "authors": [
-    "Idan A. <idan5x@live.com>"
+    "Idan A. <idan5x@live.com>",
+    "Golan Ben-Zaken <golanbenzaken@gmail.com>",
+    "Itay Hatzuel <itayhatzuel@gmail.com>"
   ],
   "description": "Visual representation of Israel's image around the world",
   "main": "index.html",
