@@ -1,5 +1,5 @@
 const NodeGeocoder = require('node-geocoder').
-      GeoJson = require('togeojson');
+      GeoJson = require('@mapbox/togeojson');
 
 const {thinky} = require('./app-components.js'),
       Types = thinky.types;

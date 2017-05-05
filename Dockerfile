@@ -13,7 +13,7 @@ COPY . /usr/src/app/
 RUN npm install
 
 # Expose port 8080.
-EXPOSE 8080
+EXPOSE 3000
 
 # Run app.
 CMD ["npm", "start"]

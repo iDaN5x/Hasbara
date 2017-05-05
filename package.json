@@ -24,6 +24,7 @@
     "twit": "^2.2.5"
   },
   "devDependencies": {
+    "bithound": "^1.7.0",
     "eslint": "^3.19.0"
   }
 }
