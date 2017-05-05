@@ -4,9 +4,7 @@ const Twitter = require('twit'),
 const {io} = require('./app-components.js'),
       config = require('./config.json');
 
-const Location = require('./models/location.js'),
-      Tweet = require('./models/tweet.js'),
-      User = require('./models/user.js');
+const { User, Tweet, Location, Sentiment } = require('./models/all.js');
 
 class TwitterHandler {
   constructor() {
@@ -20,7 +18,7 @@ class TwitterHandler {
     this.stream.on('tweet', this.onTweet);
   }
 
-  onTweet(t) {
+  async onTweet(t) {
     // Only process tweets written in supported languages.
     if (config.supportedLanguages.contains(t.lang)) {
       // Get user location as GeoJson object.
@@ -32,12 +30,12 @@ class TwitterHandler {
       // Only if coordinates exist.
       if (coordinates) {
         // Build user entry.
-        let user = User.from(t.user);
+        let user = await User.from(t.user);
         user.location = userLocation.
 
         // Build tweet entry.
         let tweet = new Tweet(t);
-        tweet.sentiment = Sentiment.from(tweet.text);
+        tweet.sentiment = await Sentiment.from(tweet.text);
         tweet.user = user;
 
         // Save tweet to database.

@@ -1,4 +1,5 @@
-const NodeGeocoder = require('node-geocoder'),
+const NodeGeocoder = require('node-geocoder').
+      GeoJson = require('togeojson');
 
 const {thinky} = require('./app-components.js'),
       Types = thinky.types;
@@ -16,25 +17,24 @@ const Location = thinky.createModel('Location', {
 });
 
 // Factory method.
-Location.prototype.constructor = async function(name) {
+Location.from = async function(name) {
   // Check if known location.
-  let location = await Location.
+  let location = await Location
                  .filter({name})
                  .run();
 
-  // Geocode name.
-  let geo = await geocoder.geocode(name);
+  if (!location) {
+    // Geocode name.
+    let geo = await geocoder.geocode(name);
 
-  // If geocoding succeeded.
-  if (geo.length > 0) {
-    // Convert google KML(?) to GeoJson.
-    let coordinates ={
-      "type": "point",
-      "coordinates": [geo[0].longitude, geo[0].latitude]
-    };
+    // If geocoding succeeded.
+    if (geo.length > 0) {
+      // Convert google KML to GeoJson.
+      let coordinates = GeoJson(geo);
 
-    // Create a new location entry.
-    location = new Location({name, coordinates});
+      // Create a new location entry.
+      location = new Location({name, coordinates});
+    }
   }
 
   return location;

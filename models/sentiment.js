@@ -12,7 +12,7 @@ let aylien = new AylienTextAPI(config.aylien);
 
 // Create sentiment model.
 const Sentiment = thinky.createModel('Sentiment', {
-  id: Types.string(),
+  id: Types.string().uuid(),
   polarity: Types.string().enum('positive', 'natural', 'negative'),
   subjectivity: Types.string().enum('objective', 'subjective'),
   subjectivityConfidence: Types.number().min(0).max(1),
@@ -24,7 +24,7 @@ const Sentiment = thinky.createModel('Sentiment', {
 Sentiment.from = async function(text) {
   // Check if anaylzed before.
   let sentiment = await Sentiment
-                  .filter({text: tweet.text})
+                  .filter({text})
                   .run();
 
   if (!sentiment) {
