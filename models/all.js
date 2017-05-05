@@ -1,5 +1,5 @@
 // Export all entities.
-modules.exports = {
+module.exports = {
   User: require('./user.js'),
   Tweet: require('./tweet.js'),
   Location: require('./location.js'),

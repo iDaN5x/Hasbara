@@ -1,6 +1,5 @@
 // Native dependencies.
-const Http = require('http'),
-      Path = require('path');
+const Http = require('http');
 
 // External dependencies.
 const Thinky = require('thinky'),
