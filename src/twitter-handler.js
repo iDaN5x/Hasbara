@@ -1,8 +1,6 @@
-const Twitter = require('twit'),
-      CamelCase = require('camelcase-keys');
+const Twitter = require('twit');
 
-const {io} = require('./app-components.js'),
-      config = require('../config.json');
+const config = require('../config.json');
 
 const { User, Tweet, Location, Sentiment } = require('./models/all.js');
 
@@ -19,6 +17,8 @@ class TwitterHandler {
   }
 
   async onTweet(t) {
+    console.log(t.text);
+
     // Only process tweets written in supported languages.
     if (config.supportedLanguages.contains(t.lang)) {
       // Get user location as GeoJson object.

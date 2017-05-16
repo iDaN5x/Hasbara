@@ -21,14 +21,14 @@ User.from = async function(raw) {
 
   if (!user) {
     // Raw location is not GeoJson.
-    delete raw["location"];
+    delete raw['location'];
 
     // Create tweet entitiy from raw data.
-    let user = new User(CamelCase(raw));
+    user = new User(CamelCase(raw));
   }
 
   return user;
-}
+};
 
 module.exports = User;
 
@@ -36,7 +36,7 @@ const Tweet = require('./tweet.js'),
       Location = require('./location.js');
 
 // Create User->Tweet relation.
-User.hasMany(Tweet, "tweets", "id", "userId");
+User.hasMany(Tweet, 'tweets', 'id', 'userId');
 
 // Create User<-Location relation.
-User.hasOne(Location, "location", "locationName", "name");
+User.hasOne(Location, 'location', 'locationName', 'name');

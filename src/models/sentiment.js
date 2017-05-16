@@ -44,4 +44,4 @@ module.exports = Sentiment;
 const Tweet = require('./tweet.js');
 
 // Create Tweet<-Sentiment relation.
-Sentiment.hasMany(Tweet, "tweets", "text", "text");
+Sentiment.hasMany(Tweet, 'tweets', 'text', 'text');

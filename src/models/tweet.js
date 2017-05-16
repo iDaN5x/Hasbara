@@ -36,7 +36,7 @@ const Sentiment = require('./sentiment.js'),
       User = require('./user.js');
 
 // Create User->Tweet relation.
-Tweet.belongsTo(User, "user", "userId", "id");
+Tweet.belongsTo(User, 'user', 'userId', 'id');
 
 // Create Tweet<-Sentiment relation.
-Tweet.hasOne(Sentiment, "sentiment", "text", "text");
+Tweet.hasOne(Sentiment, 'sentiment', 'text', 'text');

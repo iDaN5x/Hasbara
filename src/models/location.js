@@ -44,4 +44,4 @@ Location.from = async function(name) {
 module.exports = Location;
 
 // Create User<-Location relation.
-Location.hasMany(User, "users", "name", "locationName");
+Location.hasMany(User, 'users', 'name', 'locationName');

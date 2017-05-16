@@ -4,11 +4,13 @@
         "es6": true,
         "node": true
     },
+    "parserOptions": {
+      "ecmaVersion": "2017"
+    },
     "extends": "eslint:recommended",
     "rules": {
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
-        "semi": ["error", "always"],
-        "one-var": ["error", "always"]
+        "semi": ["error", "always"]
     }
 }
