@@ -2,7 +2,7 @@ const Twitter = require('twit'),
       CamelCase = require('camelcase-keys');
 
 const {io} = require('./app-components.js'),
-      config = require('./config.json');
+      config = require('../config.json');
 
 const { User, Tweet, Location, Sentiment } = require('./models/all.js');
 
@@ -12,7 +12,7 @@ class TwitterHandler {
     this.twitter = new Twitter(config.twitter);
 
     // Open tweets stream.
-    this.stream = twitter.stream('statuses/filter', config.stream);
+    this.stream = this.twitter.stream('statuses/filter', config.stream);
 
     // Register handlers.
     this.stream.on('tweet', this.onTweet);
@@ -31,7 +31,7 @@ class TwitterHandler {
       if (coordinates) {
         // Build user entry.
         let user = await User.from(t.user);
-        user.location = userLocation.
+        user.location = userLocation;
 
         // Build tweet entry.
         let tweet = new Tweet(t);

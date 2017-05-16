@@ -1,23 +1,21 @@
 const AylienTextAPI = require('aylien_textapi'),
       CamelCase = require('camelcase-keys');
 
-const {thinky} = require('./app-components.js'),
-      config = require('./config.json'),
-      Types = thinky.types;
-
-const Tweet = require('./tweet.js');
+const {thinky} = require('../app-components.js'),
+      config = require('../../config.json'),
+      Type = thinky.type;
 
 // Connect to Aylien's Text API.
 let aylien = new AylienTextAPI(config.aylien);
 
 // Create sentiment model.
 const Sentiment = thinky.createModel('Sentiment', {
-  id: Types.string().uuid(),
-  polarity: Types.string().enum('positive', 'natural', 'negative'),
-  subjectivity: Types.string().enum('objective', 'subjective'),
-  subjectivityConfidence: Types.number().min(0).max(1),
-  polarityConfidence: Types.number().min(0).max(1),
-  text: Types.string()
+  id: Type.string(),
+  polarity: Type.string().enum('positive', 'natural', 'negative'),
+  subjectivity: Type.string().enum('objective', 'subjective'),
+  subjectivityConfidence: Type.number().min(0).max(1),
+  polarityConfidence: Type.number().min(0).max(1),
+  text: Type.string()
 });
 
 // Factory method.
@@ -41,7 +39,9 @@ Sentiment.from = async function(text) {
   return sentiment;
 };
 
+module.exports = Sentiment;
+
+const Tweet = require('./tweet.js');
+
 // Create Tweet<-Sentiment relation.
 Sentiment.hasMany(Tweet, "tweets", "text", "text");
-
-module.exports = Sentiment;

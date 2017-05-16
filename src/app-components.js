@@ -7,7 +7,7 @@ const Thinky = require('thinky'),
       SocketIO = require('socket.io');
 
 // Load configuration file.
-const config = require('./config.json');
+const config = require('../config.json');
 
 // Declare app components.
 let app = new Express(),

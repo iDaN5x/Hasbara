@@ -1,3 +1,0 @@
-- name: node
-  service: app
-  command: echo "application started"

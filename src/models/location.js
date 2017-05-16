@@ -1,19 +1,20 @@
-const NodeGeocoder = require('node-geocoder').
+const NodeGeocoder = require('node-geocoder'),
       GeoJson = require('@mapbox/togeojson');
 
-const {thinky} = require('./app-components.js'),
-      Types = thinky.types;
+const {thinky} = require('../app-components.js'),
+      config = require('../../config.json'),
+      Type = thinky.type;
 
 const User = require('./user.js');
 
 // Connect to GeoCoder service.
-const geocoder = new NodeGeocoder(config.geocoder);
+const geocoder = NodeGeocoder(config.geocoder);
 
 // Create location model.
 const Location = thinky.createModel('Location', {
-  id: Types.string().uuid(),
-  coordinates: Types.point(),
-  name: Types.string()
+  id: Type.string(),
+  coordinates: Type.point(),
+  name: Type.string()
 });
 
 // Factory method.
@@ -40,7 +41,7 @@ Location.from = async function(name) {
   return location;
 };
 
+module.exports = Location;
+
 // Create User<-Location relation.
 Location.hasMany(User, "users", "name", "locationName");
-
-module.exports = Location;

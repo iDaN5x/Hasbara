@@ -1,17 +1,14 @@
 const CamelCase = require('camelcase-keys');
 
-const {thinky} = require('./app-components.js'),
-      Types = thinky.types;
-
-const Tweet = require('./tweet.js'),
-      Location = require('./location.js');
+const {thinky} = require('../app-components.js'),
+      Type = thinky.type;
 
 // Create user model.
 const User = thinky.createModel('User', {
-  id: Types.string(),
-  locationName: Types.string(),
-  statusCount: Types.number().integer().min(0),
-  followersCount: Types.number().integer().min(0)
+  id: Type.string(),
+  locationName: Type.string(),
+  statusCount: Type.number().integer().min(0),
+  followersCount: Type.number().integer().min(0)
 });
 
 // Factory method.
@@ -33,10 +30,13 @@ User.from = async function(raw) {
   return user;
 }
 
+module.exports = User;
+
+const Tweet = require('./tweet.js'),
+      Location = require('./location.js');
+
 // Create User->Tweet relation.
 User.hasMany(Tweet, "tweets", "id", "userId");
 
 // Create User<-Location relation.
 User.hasOne(Location, "location", "locationName", "name");
-
-module.exports = User;
