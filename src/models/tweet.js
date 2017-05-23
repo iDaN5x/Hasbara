@@ -15,6 +15,12 @@ const Tweet = thinky.createModel('Tweet', {
   favoriteCount: Type.number().integer().min(0)
 });
 
+// Override toString method.
+Tweet.prototype.toString = function() {
+  return `${this.user} tweeted the following ${this.sentiment} post:
+          ${this.text}`;
+};
+
 // Factory method.
 Tweet.from = async function(raw) {
   // Create tweet entitiy from raw data.

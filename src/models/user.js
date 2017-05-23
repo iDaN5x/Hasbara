@@ -11,6 +11,11 @@ const User = thinky.createModel('User', {
   followersCount: Type.number().integer().min(0)
 });
 
+// Override toString method.
+User.prototype.toString = function() {
+  return `@${this.id} from ${this.location}`;
+};
+
 // Factory method.
 User.from = async function(raw) {
   // Check if exisiting user.

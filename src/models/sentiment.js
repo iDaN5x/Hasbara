@@ -18,6 +18,11 @@ const Sentiment = thinky.createModel('Sentiment', {
   text: Type.string()
 });
 
+// Override toString method.
+Sentiment.prototype.toString = function() {
+  return `${this.subjectivity} ${this.polarity}`;
+};
+
 // Factory method.
 Sentiment.from = async function(text) {
   // Check if anaylzed before.
