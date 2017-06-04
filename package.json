@@ -11,10 +11,10 @@
   ],
   "license": "GPL-3.0",
   "scripts": {
+    "install": "",
     "start": "node --harmony-async-await src/app.js"
   },
   "dependencies": {
-    "@mapbox/togeojson": "^0.16.0",
     "aylien_textapi": "^0.6.0",
     "camelcase-keys": "^4.1.0",
     "express": "^4.15.2",

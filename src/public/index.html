@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GeoTrends</title>
+
+    <script src="bower_components/leaflet/dist/leaflet.js"
+            integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+            crossorigin=""></script>
+
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
+    <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"
+          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+          crossorigin=""/>
+
+    <link rel="stylesheet" href="bower_components/bootstrap-css/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css"/>
+    <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"/>
+
+    <style>
+        html, body, #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+        }
+
+        @keyframes blink {
+            from { opacity: 1.0; transform: scale3d(0.0, 0.0, 1.0); }
+            to { transform: scale3d(1.0, 1.0, 1.0); opacity: 0.0; }
+        }
+
+        .marker {
+            background: none;
+            border: none;
+        }
+
+        .live {
+            animation-name: blink;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-direction: forward;
+            animation-timing-function: ease-out;
+            background: #0030a5;
+            border-radius: 50%;
+            width: 5rem;
+            height: 5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" aria-expanded="false"
+                        data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">GeoTrends</a>
+            </div>
+
+            <div class="navbar-collapse collapse" id="navbar-collapse">
+                <form class="navbar-form">
+                    <div class="form-group navbar-left">
+                        <input type="checkbox" id="live-swc" data-on-text="LIVE" data-off-text="DATE" checked/>
+                    </div>
+                    <div class="form-group navbar-right">
+                        <div class="input-group">
+                            <input type="text" id="fromdate" class="form-control" placeholder="From..." disabled/>
+                            <span class="input-group-addon" id="sizing-addon1">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                            <input type="text" id="todate" class="form-control" placeholder="To..." disabled/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div id="container">
+        <div id="map"></div>
+    </div>
+
+    <script>
+        $(function() {
+            var liveSwitch = $('#live-swc');
+            var fromDate = $("#fromdate");
+            var toDate = $("#todate");
+
+            liveSwitch.bootstrapSwitch();
+            fromDate.datetimepicker();
+            toDate.datetimepicker();
+
+            liveSwitch.on('switchChange.bootstrapSwitch', function(e, state) {
+                console.log("hi");
+                fromDate.prop('disabled', state).val('');
+                toDate.prop('disabled', state).val('');
+            });
+
+            var map = L.map('map').setView([51.505, -0.09], 13);
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var icon = L.divIcon({className: 'marker', html: '<div class="live"></div>'});
+
+            L.marker([51.5, -0.09], {icon}).addTo(map);
+            L.marker([51.7, -0.083], {icon}).addTo(map);
+        });
+    </script>
+</body>
+</html>

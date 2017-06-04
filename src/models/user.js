@@ -22,7 +22,7 @@ User.from = async function(raw) {
   let user = await User
             .filter({id: raw.id})
             .getJoin({location: true})
-            .run();
+            .run()[0];
 
   if (!user) {
     // Raw location is not GeoJson.

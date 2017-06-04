@@ -1,14 +1,9 @@
-const NodeGeocoder = require('node-geocoder'),
-    GeoJson = require('@mapbox/togeojson');
+const GeoCoder = require('../geocoder.js');
 
 const {thinky} = require('../app-components.js'),
-    config = require('../../config.json'),
     Type = thinky.type;
 
 const User = require('./user.js');
-
-// Connect to GeoCoder service.
-const geocoder = NodeGeocoder(config.geocoder);
 
 // Create location model.
 const Location = thinky.createModel('Location', {
@@ -27,19 +22,13 @@ Location.from = async function (name) {
     // Check if known location.
     let location = await Location
         .filter({name})
-        .run();
+        .run()[0];
 
-    if (location.length == 0) {
+    if (!location) {
         // Geocode name.
-        let geo = geocoder.geocode(name);
+        let coordinates = await GeoCoder.geocode(name);
 
-        geo.then(x => console.log(x)).catch(x => console.log(x));
-
-        // If geo-coding succeeded.
-        if (geo.length > 0) {
-            // Convert google KML to GeoJson.
-            let coordinates = GeoJson(geo);
-
+        if (coordinates) {
             // Create a new location entry.
             location = new Location({name, coordinates});
         }

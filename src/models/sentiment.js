@@ -1,12 +1,8 @@
-const AylienTextAPI = require('aylien_textapi'),
+const SentimentAnalyzer = require("../sentiment-analyzer.js"),
       CamelCase = require('camelcase-keys');
 
 const {thinky} = require('../app-components.js'),
-      config = require('../../config.json'),
       Type = thinky.type;
-
-// Connect to Aylien's Text API.
-let aylien = new AylienTextAPI(config.aylien);
 
 // Create sentiment model.
 const Sentiment = thinky.createModel('Sentiment', {
@@ -28,12 +24,12 @@ Sentiment.from = async function(text) {
   // Check if anaylzed before.
   let sentiment = await Sentiment
                   .filter({text})
-                  .run();
+                  .run()[0];
 
   if (!sentiment) {
     // Get sentiment using Aylien Text API.
-    let raw = await aylien.sentiment({
-      'text': raw.text,
+    let raw = await SentimentAnalyzer.analyze({
+      'text': text,
       'mode': 'tweet'
     });
 

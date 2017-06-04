@@ -22,7 +22,7 @@ class TwitterHandler {
         // Only process tweets written in supported languages.
         if (config.supportedLanguages.includes(t.lang)) {
             // Get user location as GeoJson object.
-            let userLocation = Location.from(t.user.location);
+            let userLocation = await Location.from(t.user.location);
 
             // Grab pin coordinates.
             let coordinates = userLocation.coordinates || t.coordinates;
