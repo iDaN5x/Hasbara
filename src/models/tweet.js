@@ -5,7 +5,7 @@ const {thinky} = require('../app-components.js'),
 
 // Create tweet model.
 const Tweet = thinky.createModel('Tweet', {
-  id: Type.string(),
+  id: Type.number().integer(),
   lang: Type.string(),
   text: Type.string(),
   userId: Type.string(),
@@ -26,14 +26,11 @@ Tweet.from = async function(raw) {
   // Create tweet entitiy from raw data.
   let tweet = new Tweet(CamelCase(raw));
 
-  // Get tweet text's sentiment.
-  let sentiment = await Sentiment.from(tweet.text);
-
   // Set tweet's sentiment.
-  tweet.sentiment = sentiment;
+  tweet.sentiment = await Sentiment.from(tweet.text);
 
   // Save tweet to database.
-  return await tweet.saveAll({sentiment: true});
+  return tweet;
 };
 
 module.exports = Tweet;

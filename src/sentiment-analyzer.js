@@ -6,15 +6,11 @@ const AylienTextAPI = require('aylien_textapi'),
 
 const aylien = new AylienTextAPI(config.aylien);
 
-const SentimentAnalyzer = {
-    analyze: async function(info) {
-        return new Promise((resolve, reject) => {
-           aylien.sentiment(info, (err, res) => {
-              if (err) reject(err);
-              else resolve(res);
-           });
+module.exports.analyze = async function(info) {
+    return new Promise(function(resolve, reject) {
+        aylien.sentiment(info, (err, res) => {
+            if (err) reject(err);
+            else resolve(res);
         });
-    }
-};
-
-module.exports = SentimentAnalyzer;
+    });
+}

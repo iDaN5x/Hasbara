@@ -6,18 +6,11 @@ const NodeGeocoder = require('node-geocoder'),
 
 const geocoder = NodeGeocoder(config.geocoder);
 
-const originalGeocode = geocoder.geocode;
-
-geocoder.geocode = function(name) {
-    return new Promise(function(resolve, reject) {
-        originalGeocode.apply(geocoder, [name, (err, res) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve([res[0].latitude, res[0].longitude]);
-            }
-        }]);
+module.exports.geocode = async function (name) {
+    return new Promise((resolve, reject) => {
+        geocoder.geocode(name, (err, res) => {
+           if (err) reject(err);
+           else resolve(res);
+        });
     });
 };
-
-module.exports = geocoder;

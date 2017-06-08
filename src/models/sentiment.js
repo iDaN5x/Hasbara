@@ -29,8 +29,8 @@ Sentiment.from = async function(text) {
   if (!sentiment) {
     // Get sentiment using Aylien Text API.
     let raw = await SentimentAnalyzer.analyze({
-      'text': text,
-      'mode': 'tweet'
+        'text': text,
+        'mode': 'tweet'
     });
 
     // Create sentiment entry from raw data.

@@ -34,12 +34,15 @@ class TwitterHandler {
                 user.location = userLocation;
 
                 // Build tweet entry.
-                let tweet = new Tweet(t);
-                tweet.sentiment = await Sentiment.from(tweet.text);
+                let tweet = await Tweet.from(t);
                 tweet.user = user;
 
                 // Save tweet to database.
-                await tweet.saveAll();
+                try {
+                    await tweet.saveAll();
+                } catch (e) {
+                    console.log(e);
+                }
                 console.log(tweet);
             }
         }
