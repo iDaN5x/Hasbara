@@ -9,8 +9,17 @@ const geocoder = NodeGeocoder(config.geocoder);
 module.exports.geocode = async function (name) {
     return new Promise((resolve, reject) => {
         geocoder.geocode(name, (err, res) => {
-           if (err) reject(err);
-           else resolve(res);
+           if (err) {
+               reject(err);
+           }
+
+           else {
+               if (res.length > 0) {
+                   resolve([res[0].longitude, res[0].latitude]);
+               } else {
+                   resolve(null);
+               }
+           }
         });
     });
 };

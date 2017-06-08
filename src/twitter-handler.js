@@ -14,7 +14,6 @@ class TwitterHandler {
 
         // Register handlers.
         this.stream.on('tweet', this.onTweet);
-
         this.stream.on('error', console.log);
     }
 
@@ -33,17 +32,21 @@ class TwitterHandler {
                 let user = await User.from(t.user);
                 user.location = userLocation;
 
+                // Set tweet's sentiment.
+                let sentiment = await Sentiment.from(t.text);
+
                 // Build tweet entry.
                 let tweet = await Tweet.from(t);
+                tweet.sentiment = sentiment;
                 tweet.user = user;
 
                 // Save tweet to database.
                 try {
-                    await tweet.saveAll();
+                    let doc = await tweet.saveAll();
+                    console.log(doc);
                 } catch (e) {
                     console.log(e);
                 }
-                console.log(tweet);
             }
         }
     }

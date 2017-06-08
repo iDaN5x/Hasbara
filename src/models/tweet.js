@@ -8,7 +8,7 @@ const Tweet = thinky.createModel('Tweet', {
   id: Type.number().integer(),
   lang: Type.string(),
   text: Type.string(),
-  userId: Type.string(),
+  userId: Type.number().integer(),
   createdAt: Type.date(),
   coordinates: Type.point(),
   retweetCount: Type.number().integer().min(0),
@@ -25,9 +25,6 @@ Tweet.prototype.toString = function() {
 Tweet.from = async function(raw) {
   // Create tweet entitiy from raw data.
   let tweet = new Tweet(CamelCase(raw));
-
-  // Set tweet's sentiment.
-  tweet.sentiment = await Sentiment.from(tweet.text);
 
   // Save tweet to database.
   return tweet;

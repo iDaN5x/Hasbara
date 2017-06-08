@@ -8,23 +8,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>GeoTrends</title>
 
-    <script src="bower_components/leaflet/dist/leaflet.js"
-            integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
-            crossorigin=""></script>
-
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
     <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
     <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
     <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"
-          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
-          crossorigin=""/>
+    <script src="bower_components/leaflet/dist/leaflet.js"
+            integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+            crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="bower_components/bootstrap-css/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css"/>
     <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"
+          integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+          crossorigin="anonymous"/>
 
     <style>
         html, body, #container {
@@ -34,8 +32,8 @@
         }
 
         #map {
-            width: 100%;
             height: 100%;
+            width: auto;
         }
 
         .navbar {
@@ -43,30 +41,27 @@
         }
 
         @keyframes blink {
-            from { opacity: 1.0; transform: scale3d(0.0, 0.0, 1.0); }
+            from { transform: scale3d(0.0, 0.0, 1.0); opacity: 1.0; }
             to { transform: scale3d(1.0, 1.0, 1.0); opacity: 0.0; }
         }
 
-        .marker {
-            background: none;
-            border: none;
-        }
+        .marker { /* DO NOT DELETE */ }
 
         .live {
-            animation-name: blink;
-            animation-duration: 2s;
-            animation-iteration-count: infinite;
-            animation-direction: forward;
-            animation-timing-function: ease-out;
-            background: #0030a5;
-            border-radius: 50%;
             width: 5rem;
             height: 5rem;
+            position: relative;
+            left: -2rem;
+            top: -2rem;
+            border-radius: 50%;
+            animation: blink 2s ease-out;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" aria-expanded="false"
@@ -113,21 +108,28 @@
             toDate.datetimepicker();
 
             liveSwitch.on('switchChange.bootstrapSwitch', function(e, state) {
-                console.log("hi");
                 fromDate.prop('disabled', state).val('');
                 toDate.prop('disabled', state).val('');
             });
 
-            var map = L.map('map').setView([51.505, -0.09], 13);
+            var map = L.map('map').setView([0, 0], 2);
+
+            map.zoomControl.setPosition("bottomleft");
 
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            var icon = L.divIcon({className: 'marker', html: '<div class="live"></div>'});
+            var icon = L.divIcon({
+                className: 'marker',
+                html: '<div class="live" style="background: orange"></div>'
+            });
 
             L.marker([51.5, -0.09], {icon}).addTo(map);
             L.marker([51.7, -0.083], {icon}).addTo(map);
+            L.marker([21.5, -0.5], {icon}).addTo(map);
+            L.marker([35.6, 1.12], {icon}).addTo(map);
+            L.marker([14.8, -0], {icon}).addTo(map);
         });
     </script>
 </body>

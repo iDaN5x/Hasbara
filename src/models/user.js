@@ -5,7 +5,7 @@ const {thinky} = require('../app-components.js'),
 
 // Create user model.
 const User = thinky.createModel('User', {
-  id: Type.string(),
+  id: Type.number().integer(),
   locationName: Type.string(),
   statusCount: Type.number().integer().min(0),
   followersCount: Type.number().integer().min(0)

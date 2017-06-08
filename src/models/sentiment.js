@@ -7,7 +7,7 @@ const {thinky} = require('../app-components.js'),
 // Create sentiment model.
 const Sentiment = thinky.createModel('Sentiment', {
   id: Type.string(),
-  polarity: Type.string().enum('positive', 'natural', 'negative'),
+  polarity: Type.string().enum('positive', 'neutral', 'negative'),
   subjectivity: Type.string().enum('objective', 'subjective'),
   subjectivityConfidence: Type.number().min(0).max(1),
   polarityConfidence: Type.number().min(0).max(1),
