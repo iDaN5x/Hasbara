@@ -12,7 +12,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "postinstall": "cd src/public && bower install",
-    "start": "rethinkdb && node src/app.js"
+    "start": "start rethinkdb && node src/app.js"
   },
   "dependencies": {
     "aylien_textapi": "^0.6.0",
