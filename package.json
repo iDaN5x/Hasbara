@@ -1,5 +1,5 @@
 {
-  "name": "Hasbara",
+  "name": "hasbara",
   "version": "0.1.0",
   "description": "Visual representation of Israel's image around the world",
   "main": "src/app.js",
@@ -11,7 +11,7 @@
   ],
   "license": "GPL-3.0",
   "scripts": {
-    "install": "",
+    "postinstall": "cd src/public && bower install",
     "start": "node --harmony-async-await src/app.js"
   },
   "dependencies": {
