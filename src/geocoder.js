@@ -8,6 +8,8 @@ const geocoder = NodeGeocoder(config.geocoder);
 
 module.exports.geocode = async function (name) {
     return new Promise((resolve, reject) => {
+        if (!name) return;
+
         geocoder.geocode(name, (err, res) => {
            if (err) {
                reject(err);

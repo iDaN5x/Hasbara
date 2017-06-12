@@ -1,6 +1,7 @@
 const Twitter = require('twit');
 
-const config = require('../config.json');
+const {io} = require('./app-components'),
+      config = require('../config.json');
 
 const {User, Tweet, Location, Sentiment} = require('./models/all.js');
 
@@ -24,26 +25,29 @@ class TwitterHandler {
             let userLocation = await Location.from(t.user.location);
 
             // Grab pin coordinates.
-            let coordinates = userLocation.coordinates || t.coordinates;
+            let coordinates = userLocation ? userLocation.coordinates : t.coordinates;
 
             // Only if coordinates exist.
             if (coordinates) {
                 // Build user entry.
                 let user = await User.from(t.user);
-                user.location = userLocation;
 
                 // Set tweet's sentiment.
                 let sentiment = await Sentiment.from(t.text);
 
                 // Build tweet entry.
                 let tweet = await Tweet.from(t);
+
+                //
                 tweet.sentiment = sentiment;
                 tweet.user = user;
+                tweet.user.location = userLocation;
 
                 // Save tweet to database.
                 try {
-                    let doc = await tweet.saveAll();
-                    console.log(doc);
+                    let doc = await tweet.saveAll({sentiment: true, user: true});
+                    console.log(`Added tweet ${doc.id}`);
+                    io.emit('new tweet', doc);
                 } catch (e) {
                     console.log(e);
                 }

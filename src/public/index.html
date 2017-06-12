@@ -11,6 +11,7 @@
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
     <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="bower_components/socket.io-client/dist/socket.io.slim.js"></script>
     <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
     <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="bower_components/leaflet/dist/leaflet.js"
@@ -56,10 +57,11 @@
             border-radius: 50%;
             animation: blink 2s ease-out;
             animation-fill-mode: forwards;
-            animation-iteration-count: infinite;
+            //animation-iteration-count: infinite;
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
@@ -77,16 +79,26 @@
             <div class="navbar-collapse collapse" id="navbar-collapse">
                 <form class="navbar-form">
                     <div class="form-group navbar-left">
-                        <input type="checkbox" id="live-swc" data-on-text="LIVE" data-off-text="DATE" checked/>
-                    </div>
-                    <div class="form-group navbar-right">
-                        <div class="input-group">
-                            <input type="text" id="fromdate" class="form-control" placeholder="From..." disabled/>
-                            <span class="input-group-addon" id="sizing-addon1">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                            </span>
-                            <input type="text" id="todate" class="form-control" placeholder="To..." disabled/>
+                        <div class="btn-group" role="group" aria-label="severity">
+                            <button type="button" class="btn btn-success">
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span id="positive-counter">0</span>
+                            </button>
+
+                            <button type="button" class="btn btn-warning">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                                <span id="neutral-counter">0</span>
+                            </button>
+
+                            <button type="button" class="btn btn-danger">
+                                <i class="glyphicon glyphicon-thumbs-down"></i>
+                                <span id="negative-counter">0</span>
+                            </button>
                         </div>
+                    </div>
+
+                    <div class="form-group navbar-right">
+                        <input type="checkbox" id="itay-swc" data-on-text="RYG" data-off-text="BPR" checked/>
                     </div>
                 </form>
             </div>
@@ -100,10 +112,12 @@
     <script>
         $(function() {
             var liveSwitch = $('#live-swc');
+            var itaySwitch = $('#itay-swc');
             var fromDate = $("#fromdate");
             var toDate = $("#todate");
 
             liveSwitch.bootstrapSwitch();
+            itaySwitch.bootstrapSwitch();
             fromDate.datetimepicker();
             toDate.datetimepicker();
 
@@ -120,16 +134,42 @@
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            var icon = L.divIcon({
-                className: 'marker',
-                html: '<div class="live" style="background: orange"></div>'
-            });
+            var socket = io();
 
-            L.marker([51.5, -0.09], {icon}).addTo(map);
-            L.marker([51.7, -0.083], {icon}).addTo(map);
-            L.marker([21.5, -0.5], {icon}).addTo(map);
-            L.marker([35.6, 1.12], {icon}).addTo(map);
-            L.marker([14.8, -0], {icon}).addTo(map);
+            function polarity2color(polarity, forItay) {
+                var color = {
+                    'positive': 120,
+                    'neutral': 60,
+                    'negative': 0
+                }[polarity];
+
+                if (forItay) {
+                    color = 360 - color;
+                }
+
+                return color;
+            }
+
+            socket.on("new tweet", tweet => {
+                var counter = $("#" + tweet.sentiment.polarity + "-counter");
+                counter.text(Number(counter.text()) + 1);
+
+                var hue = polarity2color(tweet.sentiment.polarity, !itaySwitch.bootstrapSwitch('state'));
+                hue *= (tweet.sentiment.polarityConfidence/2 + 0.5);
+
+                var background = `hsla(${~~hue}, 100%, 50%, 1)`;
+
+                var icon = L.divIcon({
+                    className: 'marker',
+                    html: `<div class="live" style="background: ${background}"></div>`
+                });
+
+                var coordinates = tweet.user.location.coordinates || tweet.coordinates;
+                coordinates.reverse();
+
+                var marker = L.marker(coordinates, {icon});
+                marker.addTo(map);
+            });
         });
     </script>
 </body>

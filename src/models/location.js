@@ -19,12 +19,20 @@ Location.prototype.toString = function () {
 
 // Factory method.
 Location.from = async function (name) {
-    // Check if known location.
-    let location = await Location
-        .filter({name})
-        .run()[0];
+    if (name == null || name === "") {
+        return null;
+    }
 
-    if (!location) {
+    // Check if known location.
+    let indexed = await Location
+        .filter({name})
+        .run();
+
+    if (indexed.length > 0) {
+        var location = indexed[0];
+    }
+
+    else {
         // Geocode name.
         let coordinates = await GeoCoder.geocode(name);
 

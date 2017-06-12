@@ -23,6 +23,8 @@ Tweet.prototype.toString = function() {
 
 // Factory method.
 Tweet.from = async function(raw) {
+  delete raw["user"];
+
   // Create tweet entitiy from raw data.
   let tweet = new Tweet(CamelCase(raw));
 

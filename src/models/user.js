@@ -18,21 +18,22 @@ User.prototype.toString = function() {
 
 // Factory method.
 User.from = async function(raw) {
-  // Check if exisiting user.
-  let user = await User
-            .filter({id: raw.id})
-            .getJoin({location: true})
-            .run()[0];
+  try {
+      // Check if exisiting user.
+      let user = await User
+          .get(raw.id)
+          .run();
 
-  if (!user) {
-    // Raw location is not GeoJson.
-    delete raw['location'];
+      return user;
+  } catch(e) {
+      // Raw location is not GeoJson.
+      delete raw['location'];
 
-    // Create tweet entitiy from raw data.
-    user = new User(CamelCase(raw));
+      // Create tweet entitiy from raw data.
+      let user = new User(CamelCase(raw));
+
+      return user;
   }
-
-  return user;
 };
 
 module.exports = User;
